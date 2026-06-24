@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventário Doméstico Web</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ===================== CABEÇALHO ===================== -->
+  <header class="topo">
+    <div class="topo__marca">
+      <span class="topo__selo" aria-hidden="true">№</span>
+      <div>
+        <h1 class="topo__titulo">Inventário Doméstico</h1>
+        <p class="topo__subtitulo">Catálogo dos bens da sua residência</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== DASHBOARD DE INDICADORES ===================== -->
+  <section class="dashboard" aria-label="Indicadores gerais do inventário">
+    <div class="cartao-indicador">
+      <span class="cartao-indicador__icone" aria-hidden="true">▤</span>
+      <div class="cartao-indicador__texto">
+        <span class="cartao-indicador__valor" id="indicadorTotalItens">0</span>
+        <span class="cartao-indicador__label">Itens cadastrados</span>
+      </div>
+    </div>
+
+    <div class="cartao-indicador cartao-indicador--destaque">
+      <span class="cartao-indicador__icone" aria-hidden="true">$</span>
+      <div class="cartao-indicador__texto">
+        <span class="cartao-indicador__valor" id="indicadorValorTotal">R$ 0,00</span>
+        <span class="cartao-indicador__label">Valor total do patrimônio</span>
+      </div>
+    </div>
+
+    <div class="cartao-indicador">
+      <span class="cartao-indicador__icone" aria-hidden="true">◆</span>
+      <div class="cartao-indicador__texto">
+        <span class="cartao-indicador__valor" id="indicadorTotalMarcas">0</span>
+        <span class="cartao-indicador__label">Marcas diferentes</span>
+      </div>
+    </div>
+
+    <div class="cartao-indicador">
+      <span class="cartao-indicador__icone" aria-hidden="true">⌂</span>
+      <div class="cartao-indicador__texto">
+        <span class="cartao-indicador__valor cartao-indicador__valor--texto" id="indicadorLocalTop">—</span>
+        <span class="cartao-indicador__label">Local com mais itens</span>
+      </div>
+    </div>
+  </section>
+
+  <main class="conteudo">
+
+    <!-- ===================== FORMULÁRIO DE CADASTRO ===================== -->
+    <section class="painel painel--form" aria-labelledby="tituloForm">
+      <div class="painel__cabecalho">
+        <h2 id="tituloForm">Novo item</h2>
+      </div>
+
+      <form id="formItem" class="formulario" novalidate>
+        <div class="campo">
+          <label for="nome">Nome do item <span class="obrigatorio">*</span></label>
+          <input type="text" id="nome" name="nome" maxlength="150" placeholder="Ex: Notebook Dell Inspiron" required />
+          <span class="campo__erro" id="erroNome" hidden></span>
+        </div>
+
+        <div class="campo">
+          <label for="local">Local de armazenamento</label>
+          <input type="text" id="local" name="local" maxlength="100" placeholder="Ex: Escritório, Quarto, Garagem..." />
+        </div>
+
+        <div class="campo campo--full">
+          <label for="descricao">Descrição</label>
+          <textarea id="descricao" name="descricao" maxlength="1000" rows="3" placeholder="Detalhes, número de série, observações..."></textarea>
+        </div>
+
+        <div class="campo">
+          <label for="marca">Marca</label>
+          <input type="text" id="marca" name="marca" maxlength="100" placeholder="Ex: Samsung, LG, Dell..." />
+        </div>
+
+        <div class="campo">
+          <label for="data_compra">Data da compra</label>
+          <input type="date" id="data_compra" name="data_compra" />
+          <span class="campo__erro" id="erroData" hidden></span>
+        </div>
+
+        <div class="campo">
+          <label for="valor_compra">Valor da compra (R$)</label>
+          <input type="number" id="valor_compra" name="valor_compra" min="0.01" step="0.01" placeholder="0,00" />
+          <span class="campo__erro" id="erroValor" hidden></span>
+        </div>
+
+        <p class="formulario__erro" id="formErro" role="alert" hidden></p>
+
+        <div class="formulario__acoes">
+          <button type="submit" class="botao botao--primario" id="botaoSalvar">Cadastrar item</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ===================== LISTAGEM E PESQUISA ===================== -->
+    <section class="painel painel--lista" aria-labelledby="tituloLista">
+      <div class="painel__cabecalho painel__cabecalho--lista">
+        <h2 id="tituloLista">Itens cadastrados</h2>
+      </div>
+
+      <div class="pesquisa">
+        <span class="pesquisa__icone" aria-hidden="true">⚲</span>
+        <input
+          type="search"
+          id="pesquisaNome"
+          class="pesquisa__input"
+          placeholder="Pesquisar item pelo nome..."
+          aria-label="Pesquisar item pelo nome"
+        />
+      </div>
+
+      <div class="tabela-wrapper">
+        <table class="tabela" id="tabelaItens">
+          <thead>
+            <tr>
+              <th scope="col" class="coluna-id">ID</th>
+              <th scope="col" class="ordenavel" data-campo="nome">
+                Nome <span class="seta-ordenacao" aria-hidden="true"></span>
+              </th>
+              <th scope="col">Local</th>
+              <th scope="col" class="ordenavel" data-campo="marca">
+                Marca <span class="seta-ordenacao" aria-hidden="true"></span>
+              </th>
+              <th scope="col" class="ordenavel" data-campo="data_compra">
+                Data da compra <span class="seta-ordenacao" aria-hidden="true"></span>
+              </th>
+              <th scope="col" class="ordenavel" data-campo="valor_compra">
+                Valor <span class="seta-ordenacao" aria-hidden="true"></span>
+              </th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="corpoTabela">
+            <!-- Linhas inseridas dinamicamente via JavaScript (app.js) -->
+          </tbody>
+        </table>
+
+        <p class="tabela__vazio" id="mensagemVazia" hidden>Nenhum item encontrado para esta pesquisa.</p>
+        <p class="tabela__carregando" id="mensagemCarregando">Carregando itens...</p>
+      </div>
+    </section>
+
+    <!-- ===================== RESUMO DO INVENTÁRIO ===================== -->
+    <section class="painel painel--resumo" aria-labelledby="tituloResumo">
+      <div class="painel__cabecalho">
+        <h2 id="tituloResumo">Resumo do inventário</h2>
+      </div>
+
+      <div class="resumo-grade">
+        <div class="resumo-item">
+          <span class="resumo-item__label">Quantidade total de itens</span>
+          <span class="resumo-item__valor" id="resumoTotalItens">0</span>
+        </div>
+        <div class="resumo-item">
+          <span class="resumo-item__label">Valor total do patrimônio</span>
+          <span class="resumo-item__valor" id="resumoValorTotal">R$ 0,00</span>
+        </div>
+        <div class="resumo-item">
+          <span class="resumo-item__label">Valor médio por item</span>
+          <span class="resumo-item__valor" id="resumoValorMedio">R$ 0,00</span>
+        </div>
+        <div class="resumo-item resumo-item--full">
+          <span class="resumo-item__label">Item mais caro cadastrado</span>
+          <span class="resumo-item__valor" id="resumoItemMaisCaro">—</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== MODAL DE EDIÇÃO ===================== -->
+  <div class="modal" id="modalEdicao" hidden>
+    <div class="modal__caixa modal__caixa--form" role="dialog" aria-modal="true" aria-labelledby="modalEdicaoTitulo">
+      <div class="modal__cabecalho">
+        <h3 id="modalEdicaoTitulo">Editar item</h3>
+        <button type="button" class="modal__fechar" id="botaoFecharModalEdicao" aria-label="Fechar">×</button>
+      </div>
+
+      <form id="formEdicao" class="formulario" novalidate>
+        <input type="hidden" id="editId" value="" />
+
+        <div class="campo">
+          <label for="editNome">Nome do item <span class="obrigatorio">*</span></label>
+          <input type="text" id="editNome" name="nome" maxlength="150" required />
+          <span class="campo__erro" id="erroEditNome" hidden></span>
+        </div>
+
+        <div class="campo">
+          <label for="editLocal">Local de armazenamento</label>
+          <input type="text" id="editLocal" name="local" maxlength="100" />
+        </div>
+
+        <div class="campo campo--full">
+          <label for="editDescricao">Descrição</label>
+          <textarea id="editDescricao" name="descricao" maxlength="1000" rows="3"></textarea>
+        </div>
+
+        <div class="campo">
+          <label for="editMarca">Marca</label>
+          <input type="text" id="editMarca" name="marca" maxlength="100" />
+        </div>
+
+        <div class="campo">
+          <label for="editDataCompra">Data da compra</label>
+          <input type="date" id="editDataCompra" name="data_compra" />
+          <span class="campo__erro" id="erroEditData" hidden></span>
+        </div>
+
+        <div class="campo">
+          <label for="editValorCompra">Valor da compra (R$)</label>
+          <input type="number" id="editValorCompra" name="valor_compra" min="0.01" step="0.01" />
+          <span class="campo__erro" id="erroEditValor" hidden></span>
+        </div>
+
+        <p class="formulario__erro" id="formEdicaoErro" role="alert" hidden></p>
+
+        <div class="modal__acoes">
+          <button type="button" class="botao botao--secundario" id="botaoCancelarEdicao">Cancelar</button>
+          <button type="submit" class="botao botao--primario" id="botaoSalvarEdicao">Salvar alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== MODAL DE CONFIRMAÇÃO DE EXCLUSÃO ===================== -->
+  <div class="modal" id="modalConfirmacao" hidden>
+    <div class="modal__caixa" role="alertdialog" aria-modal="true" aria-labelledby="modalTitulo">
+      <h3 id="modalTitulo">Tem certeza que deseja excluir este item?</h3>
+      <p id="modalTexto">Esta ação não pode ser desfeita.</p>
+      <div class="modal__acoes">
+        <button type="button" class="botao botao--secundario" id="botaoModalCancelar">Cancelar</button>
+        <button type="button" class="botao botao--perigo" id="botaoModalConfirmar">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TOASTS / NOTIFICAÇÕES ===================== -->
+  <div class="toast-area" id="toastArea" aria-live="polite"></div>
+
+  <footer class="rodape">
+    <p>Inventário Doméstico Web &mdash; Projeto acadêmico de Desenvolvimento Web (Node.js, Express, SQLite).</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "inventario-domestico-web",
+  "version": "1.0.0",
+  "description": "Sistema Full Stack para gerenciamento do inventário de bens de uma residência (HTML5, CSS3, JavaScript puro, Node.js, Express e SQLite).",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node backend/server.js"
+  },
+  "keywords": [
+    "inventario",
+    "fullstack",
+    "express",
+    "sqlite",
+    "javascript"
+  ],
+  "author": "Disciplina de Desenvolvimento Web",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "sqlite3": "^5.1.7",
+    "cors": "^2.8.5"
+  }
+}
