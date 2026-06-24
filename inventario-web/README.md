@@ -20,7 +20,7 @@ Permite cadastrar, listar, pesquisar, editar e excluir itens do inventário dom�
 - [Possíveis problemas e soluções](#-possíveis-problemas-e-soluções)
 
 ---
-
+Hospedagem no Render: https://inventario-domestico-web.onrender.com
 ## 🛠 Tecnologias utilizadas
 
 **Frontend**
